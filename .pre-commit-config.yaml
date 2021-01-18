@@ -21,7 +21,7 @@ repos:
         name: isort seed config
         always_run: false
         types: [python]
-  - repo: https://github.com/timothycrosley/isort
+  - repo: https://github.com/PyCQA/isort
     rev: 5.7.0
     hooks:
       - id: isort
