@@ -1,5 +1,7 @@
 # pyDOI -- Python DOI Resolver
 
+[![badge:pypi-version](https://img.shields.io/pypi/v/pyDOI.svg)](https://pypi.org/project/pyDOI)
+[![badge:py-versions](https://img.shields.io/pypi/pyversions/pyDOI.svg)](https://pypi.org/project/pyDOI)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white.svg)](https://github.com/pre-commit/pre-commit)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/lcnittl/pyDOI/master.svg)](https://results.pre-commit.ci/latest/github/lcnittl/pyDOI/master)
 [![Code style: black](https://img.shields.io/badge/code_style-black-000000.svg)](https://github.com/psf/black)
