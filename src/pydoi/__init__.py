@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import logging
 import xml.etree.ElementTree as ET  # noqa: DUO107, N817  # nosec: B405
-from typing import Any, Optional, Union
+from operator import methodcaller
+from typing import Any, Union
 
 import requests
 
@@ -86,21 +87,30 @@ def resolve(
     return data
 
 
-def get_url(doi: str) -> str | list[str]:
+def get_url(doi: str, /, *, allow_multi: bool = False) -> str | list[str]:
     """Resolve given DOI and return its target URL."""
     response = resolve(doi, params={"type": ["URL", "10320/loc"]})
     if response and response["responseCode"] == 1:
-        if response["values"][0]["type"] == "URL":
-            url = response["values"][0]["data"]["value"]
+        data_value = response["values"][0]["data"]["value"]
+        response_type = response["values"][0]["type"]
+        logger.debug("Record type is '%s'", response_type)
+        if response_type == "URL":
+            url = data_value
             logger.debug("Resolved DOI to single URL: '%s'", url)
             return url
 
-        elif response["values"][0]["type"] == "10320/loc":
-            xml = ET.fromstring(response["values"][0]["data"]["value"])  # nosec: B314
+        elif response_type == "10320/loc":
+            xml = ET.fromstring(data_value)  # nosec: B314
             nodes = xml.findall(".//*[@href]")
+            if allow_multi:
+                urls = [node.get("href") for node in nodes]
+                logger.debug("Resolved DOI to list of URLs: '%s'", urls)
+                return urls
+            nodes.sort(key=methodcaller("get", "weight"))
             urls = [node.get("href") for node in nodes]
-            logger.debug("Resolved DOI to list of URLs: '%s'", urls)
-            return urls
+            url = urls[-1]
+            logger.debug("Resolved DOI to single URL with highest weight: '%s'", url)
+            return url
 
     logger.error("Failed to get URL from DOI.")
     return None
