@@ -10,6 +10,10 @@
 Wrapper for the [DOI system Proxy Server REST API][api-docs] (see also
 [here][api-docs2]).
 
+Happy to receive any help in the form of bug reports, suggestions and/or pull requests!
+Especially, suggestions to enhance programming style (and also setup of a test suite)
+are highly welcome.
+
 ## Usage
 
 ```python
