@@ -111,11 +111,15 @@ def get_url(doi: str, /, *, allow_multi: bool = False) -> str | list[str]:
                 urls = [node.get("href") for node in nodes]
                 logger.debug("Resolved DOI to list of URLs: '%s'", urls)
                 return urls
-            nodes.sort(key=methodcaller("get", "weight"))
-            urls = [node.get("href") for node in nodes]
-            url = urls[-1]
-            logger.debug("Resolved DOI to single URL with highest weight: '%s'", url)
-            return url
+
+            else:
+                nodes.sort(key=methodcaller("get", "weight"))
+                urls = [node.get("href") for node in nodes]
+                url = urls[-1]
+                logger.debug(
+                    "Resolved DOI to single URL with highest weight: '%s'", url
+                )
+                return url
 
     logger.error("Failed to get URL from DOI.")
     return None
