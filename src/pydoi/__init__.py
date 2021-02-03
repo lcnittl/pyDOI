@@ -9,10 +9,16 @@ logger = logging.getLogger("pydoi")
 
 
 API_RESPONSES = {
-    1: "Success.",  # (HTTP 200 OK)
-    2: "Error. Something unexpected went wrong during handle resolution.",  # (HTTP 500 Internal Server Error)
-    100: "Handle Not Found.",  # (HTTP 404 Not Found)
-    200: "Values Not Found. The handle exists but has no values (or no values according to the types and indices specified).",  # (HTTP 200 OK)
+    1: {"msg": "Success.", "status_code": 200},
+    2: {
+        "msg": "Error. Something unexpected went wrong during handle resolution.",
+        "status_code": 500,
+    },
+    100: {"msg": "Handle Not Found.", "status_code": 404},
+    200: {
+        "msg": "Values Not Found. The handle exists but has no values (or no values according to the types and indices specified).",
+        "status_code": 200,
+    },
 }
 
 
@@ -55,13 +61,15 @@ def resolve(
 
     response = requests.get(url, params=params, **kwargs)
 
-    if response.status_code not in [200, 404, 500]:
+    if response.status_code not in [
+        api_response["status_code"] for api_response in API_RESPONSES.values()
+    ]:
         logger.critical(
             "Status Code %s: %s",
             response.status_code,
             requests.status_codes._codes[response.status_code][0],
         )
-        # raise error and pass on status_code
+        # TODO: raise error and pass on status_code
         return None
 
     data = response.json()
@@ -70,9 +78,9 @@ def resolve(
         logger.error(
             "Response Code %s: %s",
             data["responseCode"],
-            API_RESPONSES[data["responseCode"]],
+            API_RESPONSES[data["responseCode"]]["msg"],
         )
-        # raise error and pass on responseCode ?
+        # TODO: raise error and pass on responseCode ?
         # return
     return data
 
@@ -82,4 +90,6 @@ def get_url(doi: str) -> str:
     response = resolve(doi, params={"type": "URL"})
     if "values" in response:
         return response["values"][0]["data"]["value"]
+
+    logger.error("Failed to get URL from DOI.")
     return None
