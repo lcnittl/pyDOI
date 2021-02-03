@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import xml.etree.ElementTree as ET  # noqa: DUO107, N817  # nosec: B405
 from typing import Any, Optional, Union
 
 import requests
@@ -85,11 +86,21 @@ def resolve(
     return data
 
 
-def get_url(doi: str) -> str:
+def get_url(doi: str) -> str | list[str]:
     """Resolve given DOI and return its target URL."""
-    response = resolve(doi, params={"type": "URL"})
-    if "values" in response:
-        return response["values"][0]["data"]["value"]
+    response = resolve(doi, params={"type": ["URL", "10320/loc"]})
+    if response and response["responseCode"] == 1:
+        if response["values"][0]["type"] == "URL":
+            url = response["values"][0]["data"]["value"]
+            logger.debug("Resolved DOI to single URL: '%s'", url)
+            return url
+
+        elif response["values"][0]["type"] == "10320/loc":
+            xml = ET.fromstring(response["values"][0]["data"]["value"])  # nosec: B314
+            nodes = xml.findall(".//*[@href]")
+            urls = [node.get("href") for node in nodes]
+            logger.debug("Resolved DOI to list of URLs: '%s'", urls)
+            return urls
 
     logger.error("Failed to get URL from DOI.")
     return None
