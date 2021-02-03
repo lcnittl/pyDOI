@@ -46,10 +46,20 @@ In [4]: # Get URL
 In [5]: pydoi.get_url("10.1016/j.chempr.2020.04.016")
 Out[5]: 'https://linkinghub.elsevier.com/retrieve/pii/S2451929420301844'
 
-In [6]: # pyDOI supports the use of query parameters
+In [6]: ## Get URL(s) from "10320/loc" type records
 
-In [7]: pydoi.resolve("10.1002/anie.201804551", params=[("type", "URL")])
-Out[7]:
+In [7]: pydoi.get_url("10.6567/IFToMM.14TH.WC.OS3.029")
+Out[7]: 'https://www.airitilibrary.com/Publication/alDetailedMesh?DocID=P20150909001-201510-201510260026-201510260026-672-680'
+
+In [8]: pydoi.get_url("10.6567/IFToMM.14TH.WC.OS3.029", allow_multi=True)
+Out[8]:
+['http://www.airitilibrary.cn/Publication/alDetailedMesh?DocID=P20150909001-201510-201510260026-201510260026-672-680',
+ 'https://www.airitilibrary.com/Publication/alDetailedMesh?DocID=P20150909001-201510-201510260026-201510260026-672-680']
+
+In [9]: # pyDOI supports the use of query parameters
+
+In [10]: pydoi.resolve("10.1002/anie.201804551", params=[("type", "URL")])
+Out[10]:
 {'responseCode': 1,
  'handle': '10.1002/anie.201804551',
  'values': [{'index': 1,
@@ -59,8 +69,8 @@ Out[7]:
    'ttl': 86400,
    'timestamp': '2020-03-19T11:37:54Z'}]}
 
-In [8]: pydoi.resolve("10.1002/anie.201804551", params=[("type", "HS_ADMIN")])
-Out[8]:
+In [11]: pydoi.resolve("10.1002/anie.201804551", params=[("type", "HS_ADMIN")])
+Out[11]:
 {'responseCode': 1,
  'handle': '10.1002/anie.201804551',
  'values': [{'index': 100,
