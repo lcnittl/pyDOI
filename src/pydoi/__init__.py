@@ -88,7 +88,12 @@ def resolve(
 
 
 def get_url(doi: str, /, *, allow_multi: bool = False) -> str | list[str]:
-    """Resolve given DOI and return its target URL."""
+    """Resolve given DOI and return its target URL(s).
+
+    :param doi: (str) DOI.
+    :param allow_multi: (bool, optional) If True, returns list of URLs for "10320/loc"
+        types. (Default: False)
+    """
     response = resolve(doi, params={"type": ["URL", "10320/loc"]})
     if response and response["responseCode"] == 1:
         data_value = response["values"][0]["data"]["value"]
