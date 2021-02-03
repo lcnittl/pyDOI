@@ -12,13 +12,15 @@ Wrapper for the [DOI system Proxy Server REST API][api-docs] (see also
 
 ## Usage
 
-```ipython
+```python
 In [1]: import pydoi
+```
 
-In [2]: # Get full response
+Get full response
 
-In [3]: pydoi.resolve("10.1002/chem.202000622")
-Out[3]:
+```python
+In [2]: pydoi.resolve("10.1002/chem.202000622")
+Out[2]:
 {'responseCode': 1,
  'handle': '10.1002/chem.202000622',
  'values': [{'index': 1,
@@ -40,26 +42,32 @@ Out[3]:
      'permissions': '111111110010'}},
    'ttl': 86400,
    'timestamp': '2020-03-30T02:01:43Z'}]}
+```
 
-In [4]: # Get URL
+Get URL
 
-In [5]: pydoi.get_url("10.1016/j.chempr.2020.04.016")
-Out[5]: 'https://linkinghub.elsevier.com/retrieve/pii/S2451929420301844'
+```python
+In [3]: pydoi.get_url("10.1016/j.chempr.2020.04.016")
+Out[3]: 'https://linkinghub.elsevier.com/retrieve/pii/S2451929420301844'
+```
 
-In [6]: ## Get URL(s) from "10320/loc" type records
+Get single URL or list of URLs from "10320/loc" type records
 
-In [7]: pydoi.get_url("10.6567/IFToMM.14TH.WC.OS3.029")
-Out[7]: 'https://www.airitilibrary.com/Publication/alDetailedMesh?DocID=P20150909001-201510-201510260026-201510260026-672-680'
+```python
+In [4]: pydoi.get_url("10.6567/IFToMM.14TH.WC.OS3.029")
+Out[4]: 'https://www.airitilibrary.com/Publication/alDetailedMesh?DocID=P20150909001-201510-201510260026-201510260026-672-680'
 
-In [8]: pydoi.get_url("10.6567/IFToMM.14TH.WC.OS3.029", allow_multi=True)
-Out[8]:
+In [5]: pydoi.get_url("10.6567/IFToMM.14TH.WC.OS3.029", allow_multi=True)
+Out[5]:
 ['http://www.airitilibrary.cn/Publication/alDetailedMesh?DocID=P20150909001-201510-201510260026-201510260026-672-680',
  'https://www.airitilibrary.com/Publication/alDetailedMesh?DocID=P20150909001-201510-201510260026-201510260026-672-680']
+```
 
-In [9]: # pyDOI supports the use of query parameters
+pyDOI supports the use of query parameters
 
-In [10]: pydoi.resolve("10.1002/anie.201804551", params=[("type", "URL")])
-Out[10]:
+```python
+In [6]: pydoi.resolve("10.1002/anie.201804551", params=[("type", "URL")])
+Out[6]:
 {'responseCode': 1,
  'handle': '10.1002/anie.201804551',
  'values': [{'index': 1,
@@ -69,11 +77,16 @@ Out[10]:
    'ttl': 86400,
    'timestamp': '2020-03-19T11:37:54Z'}]}
 
-In [11]: pydoi.resolve("10.1002/anie.201804551", params=[("type", "HS_ADMIN")])
-Out[11]:
+In [7]: pydoi.resolve("10.1002/anie.201804551", params=[("type", ["HS_ADMIN", "700050"])])
+Out[7]:
 {'responseCode': 1,
  'handle': '10.1002/anie.201804551',
- 'values': [{'index': 100,
+ 'values': [{'index': 700050,
+   'type': '700050',
+   'data': {'format': 'string', 'value': '2020031904142600770'},
+   'ttl': 86400,
+   'timestamp': '2020-03-19T11:37:54Z'},
+  {'index': 100,
    'type': 'HS_ADMIN',
    'data': {'format': 'admin',
     'value': {'handle': '0.na/10.1002',
