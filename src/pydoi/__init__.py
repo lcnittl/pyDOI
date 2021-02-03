@@ -90,15 +90,30 @@ def resolve(
 def get_url(doi: str, /, *, allow_multi: bool = False) -> str | list[str]:
     """Resolve given DOI and return its target URL(s).
 
+    The function will process a response's first "URL" type entry. If the response has
+    no "URL" type entry, the first "10320/loc" type entry is processed.
+
     :param doi: (str) DOI.
     :param allow_multi: (bool, optional) If True, returns list of URLs for "10320/loc"
         types. (Default: False)
     """
     response = resolve(doi, params={"type": ["URL", "10320/loc"]})
     if response and response["responseCode"] == 1:
-        data_value = response["values"][0]["data"]["value"]
-        response_type = response["values"][0]["type"]
+        response_types = [value["type"] for value in response["values"]]
+        for good_response_type in ["URL", "10320/loc"]:
+            if good_response_type in response_types:
+                idx = response_types.index(good_response_type)
+                break
+        else:
+            logger.error("Response does not contain entries with handleable type.")
+            return None
+
+        response_type = response["values"][idx]["type"]
         logger.debug("Record type is '%s'", response_type)
+
+        data_value = response["values"][idx]["data"]["value"]
+        logger.debug("Data value is '%s'", data_value)
+
         if response_type == "URL":
             url = data_value
             logger.debug("Resolved DOI to single URL: '%s'", url)
