@@ -7,7 +7,8 @@
 [![Code style: black](https://img.shields.io/badge/code_style-black-000000.svg)](https://github.com/psf/black)
 [![Code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-Wrapper for the [DOI system Proxy Server REST API][api-docs].
+Wrapper for the [DOI system Proxy Server REST API][api-docs] (see also
+[here][api-docs2]).
 
 ## Usage
 
@@ -87,5 +88,6 @@ GNU General Public License v3.0 or later
 See [LICENSE][license] for the full text.
 
 [api-docs]: https://www.doi.org/factsheets/DOIProxy.html#rest-api
+[api-docs2]: https://www.doi.org/doi_handbook/3_Resolution.html#3.8.3
 [license]: LICENSE
 [pypi]: https://pypi.org/
