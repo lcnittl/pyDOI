@@ -28,7 +28,7 @@ def resolve(
     handle: str,
     /,
     *,
-    params: Union[dict[str, Any], list[Union[tuple, bytes]]] = None,
+    params: dict[str, Any] | list[tuple | bytes] = None,
     **kwargs,
 ) -> dict:
     r"""Return a dict of the server JSON response for a given DOI.
