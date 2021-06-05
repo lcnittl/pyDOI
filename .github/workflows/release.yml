@@ -20,4 +20,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }} # Private Acces Token
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Does not trigger release
         with:
-          name: Release ${{ github.GITHUB_REF }}
+          name: Release ${{ github.ref#refs/*/ }}
