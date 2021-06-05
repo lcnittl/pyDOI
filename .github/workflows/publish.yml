@@ -1,11 +1,13 @@
 # This workflow will upload a Python Package to PyPI when a release is published
-# For more information see: https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
+# For more information see:
+#   - https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
+#   - https://github.com/pypa/gh-action-pypi-publish
 
 name: Upload Python Package
 
 on:
   release:
-    types: [created, edited, published, released]
+    types: [published]
 
 jobs:
   deploy:
@@ -26,7 +28,7 @@ jobs:
         run: |
           python setup.py sdist bdist_wheel
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@v1
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
