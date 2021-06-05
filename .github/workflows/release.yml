@@ -14,13 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set output
-        id: vars
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
       - name: Release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }} # Private Acces Token
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Does not trigger release
-        with:
-          name: Release ${{ steps.vars.outputs.tag }}
